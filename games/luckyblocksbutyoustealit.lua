@@ -1,15 +1,5 @@
--- =========================================================
--- MÓDULO: Lucky blocks but you steal it
--- =========================================================
+local Rayfield = loadstring(game:HttpGet("https://sirius.menu/gen2"))()
 
--- Captura a janela principal e a biblioteca passada pelo orquestrador
-local Window, Fluent = ...
-
-if not Window then
-    return warn("[Nexus Hub] Erro: Janela da UI não foi recebida pelo módulo.")
-end
-
--- Serviços do Roblox
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -17,42 +7,50 @@ local Workspace = game:GetService("Workspace")
 local RunService = game:GetService("RunService")
 local UserInputService = game:GetService("UserInputService")
 
--- Remotes
-local Remote = ReplicatedStorage:WaitForChild("Packages"):WaitForChild("Replion"):WaitForChild("Remotes"):WaitForChild("TrollTarget")
-local spinRemote = ReplicatedStorage:FindFirstChild("Packages") and ReplicatedStorage.Packages:FindFirstChild("Net") and ReplicatedStorage.Packages.Net:FindFirstChild("RE/GalaxyEventService/Spin")
-local lavaSpinRemote = ReplicatedStorage:FindFirstChild("Packages") and ReplicatedStorage.Packages:FindFirstChild("Net") and ReplicatedStorage.Packages.Net:FindFirstChild("RE/MoltenEventService/Spin")
+local Remote = ReplicatedStorage.Packages.Replion.Remotes.TrollTarget
 
--- =========================================================
--- ABA MAIN (Funções do Jogo)
--- =========================================================
-local MainTab = Window:AddTab({ Title = "Main", Icon = "sparkles" })
+local Window = Rayfield:CreateWindow({
+    Name = " Lucky blocks but you steal it",
+    Subtitle = "made by localqw6",
+    Theme = "Amethyst",
+})
 
--- --- All Abusing ---
-local function createPlayerToggle(toggleTitle, actionName)
+local MainTab = Window:CreateTab({
+    Name = " Main",
+    Icon = nil,
+})
+
+MainTab:CreateSection("All Abusing")
+
+local function createPlayerToggle(toggleName, actionName)
     local enabled = false
 
-    MainTab:AddToggle(toggleTitle, {
-        Title = toggleTitle,
-        Default = false,
+    MainTab:CreateToggle({
+        Name = " " .. toggleName,
+        CurrentValue = false,
+
         Callback = function(Value)
             enabled = Value
+
             if enabled then
                 task.spawn(function()
                     while enabled do
                         for _, player in ipairs(Players:GetPlayers()) do
-                            if not enabled then break end
+                            if not enabled then
+                                break
+                            end
+
                             if player ~= LocalPlayer then
-                                pcall(function()
-                                    Remote:FireServer(player.Name, actionName)
-                                end)
+                                Remote:FireServer(player.Name, actionName)
                                 task.wait(1)
                             end
                         end
+
                         task.wait(0.1)
                     end
                 end)
             end
-        end
+        end,
     })
 end
 
@@ -62,28 +60,39 @@ createPlayerToggle("Fling All", "Fling")
 createPlayerToggle("Slow All", "Slow")
 createPlayerToggle("Jail All", "Jail")
 
--- --- Stealing ---
+MainTab:CreateSection("Stealing")
+
 local fastStealEnabled = false
 local promptConnection = nil
 local promptHooks = {}
 
 local function hookPrompt(prompt)
-    if not prompt:IsA("ProximityPrompt") or promptHooks[prompt] then return end
+    if not prompt:IsA("ProximityPrompt") then
+        return
+    end
 
-    promptHooks[prompt] = prompt:GetPropertyChangedSignal("HoldDuration"):Connect(function()
-        if fastStealEnabled and prompt.Parent and prompt.HoldDuration ~= 0 then
-            prompt.HoldDuration = 0
-        end
-    end)
+    if promptHooks[prompt] then
+        return
+    end
+
+    promptHooks[prompt] =
+        prompt:GetPropertyChangedSignal("HoldDuration"):Connect(function()
+            if fastStealEnabled
+                and prompt.Parent
+                and prompt.HoldDuration ~= 0 then
+                prompt.HoldDuration = 0
+            end
+        end)
 
     if fastStealEnabled then
         prompt.HoldDuration = 0
     end
 end
 
-MainTab:AddToggle("FastSteal", {
-    Title = "Fast Steal",
-    Default = false,
+MainTab:CreateToggle({
+    Name = " Fast Steal",
+    CurrentValue = false,
+
     Callback = function(Value)
         fastStealEnabled = Value
 
@@ -94,7 +103,9 @@ MainTab:AddToggle("FastSteal", {
 
             if not promptConnection then
                 promptConnection = Workspace.DescendantAdded:Connect(function(obj)
-                    if fastStealEnabled then hookPrompt(obj) end
+                    if fastStealEnabled then
+                        hookPrompt(obj)
+                    end
                 end)
             end
         else
@@ -108,160 +119,226 @@ MainTab:AddToggle("FastSteal", {
                 promptHooks[prompt] = nil
             end
         end
-    end
+    end,
 })
 
--- --- Auto Spins ---
+-- Auto Spin Galactic
 local autoSpinEnabled = false
-MainTab:AddToggle("AutoSpinGalactic", {
-    Title = "Auto Spin Galactic",
-    Default = false,
+
+local spinRemote = ReplicatedStorage
+    :WaitForChild("Packages")
+    :WaitForChild("Net")
+    :FindFirstChild("RE/GalaxyEventService/Spin")
+
+MainTab:CreateToggle({
+    Name = " Auto Spin Galactic",
+    CurrentValue = false,
+
     Callback = function(Value)
         autoSpinEnabled = Value
+
         if autoSpinEnabled then
             task.spawn(function()
                 while autoSpinEnabled do
                     if spinRemote then
-                        pcall(function() spinRemote:FireServer() end)
+                        pcall(function()
+                            spinRemote:FireServer()
+                        end)
                     end
+
                     task.wait(0.1)
                 end
             end)
         end
-    end
+    end,
 })
 
+-- Auto Spin Lava
 local autoSpinLavaEnabled = false
-MainTab:AddToggle("AutoSpinLava", {
-    Title = "Auto Spin Lava",
-    Default = false,
+
+local lavaSpinRemote = ReplicatedStorage
+    :WaitForChild("Packages")
+    :WaitForChild("Net")
+    :FindFirstChild("RE/MoltenEventService/Spin")
+
+MainTab:CreateToggle({
+    Name = " Auto Spin Lava",
+    CurrentValue = false,
+
     Callback = function(Value)
         autoSpinLavaEnabled = Value
+
         if autoSpinLavaEnabled then
             task.spawn(function()
                 while autoSpinLavaEnabled do
                     if lavaSpinRemote then
-                        pcall(function() lavaSpinRemote:FireServer() end)
+                        pcall(function()
+                            lavaSpinRemote:FireServer()
+                        end)
                     end
+
                     task.wait(0.1)
                 end
             end)
         end
-    end
+    end,
 })
 
--- --- Delete Lasers ---
-MainTab:AddButton({
-    Title = "Delete Lasers",
-    Callback = function()
-        local plots = Workspace:FindFirstChild("Plots")
-        if plots then
-            for _, obj in ipairs(plots:GetDescendants()) do
-                if obj:IsA("Folder") and (obj.Name == "Laser" or obj.Name == "LaserHitbox") then
-                    obj:Destroy()
+-- Delete Lasers
+MainTab:CreateToggle({
+    Name = " Delete Lasers",
+    CurrentValue = false,
+
+    Callback = function(Value)
+        if Value then
+            local plots = Workspace:FindFirstChild("Plots")
+
+            if plots then
+                for _, obj in ipairs(plots:GetDescendants()) do
+                    if obj:IsA("Folder") and (
+                        obj.Name == "Laser" or
+                        obj.Name == "LaserHitbox"
+                    ) then
+                        obj:Destroy()
+                    end
                 end
             end
-            Fluent:Notify({ Title = "Sucesso", Content = "Lasers deletados!", Duration = 3 })
         end
-    end
+    end,
 })
 
--- =========================================================
--- ABA TARGET (Ações Indivíduais)
--- =========================================================
-local TargetTab = Window:AddTab({ Title = "Target", Icon = "user" })
+-- Target Tab
+local TargetTab = Window:CreateTab({
+    Name = " Target",
+    Icon = nil,
+})
+
+TargetTab:CreateSection("Select Target")
 
 local selectedPlayer = nil
+local playerDropdown = nil
 
 local function getPlayerNames()
     local names = {}
+
     for _, player in ipairs(Players:GetPlayers()) do
         if player ~= LocalPlayer then
             table.insert(names, player.Name)
         end
     end
+
     table.sort(names)
     return names
 end
 
-local playerDropdown = TargetTab:AddDropdown("PlayerDropdown", {
-    Title = "Selecionar Jogador",
-    Values = getPlayerNames(),
-    Multi = false,
-    Default = nil,
-    Callback = function(Value)
-        selectedPlayer = Value
-    end
+playerDropdown = TargetTab:CreateDropdown({
+    Name = " Select Player",
+    Options = getPlayerNames(),
+    CurrentOption = {},
+    MultipleOptions = false,
+
+    Callback = function(Option)
+        if typeof(Option) == "table" then
+            selectedPlayer = Option[1]
+        else
+            selectedPlayer = Option
+        end
+    end,
 })
 
--- Atualiza lista de jogadores dinamicamente
 task.spawn(function()
-    while task.wait(2) do
-        if playerDropdown then
-            playerDropdown:SetValues(getPlayerNames())
+    while task.wait(1) do
+        local names = getPlayerNames()
+
+        if playerDropdown and playerDropdown.Refresh then
+            playerDropdown:Refresh(names)
+        end
+
+        if selectedPlayer and not Players:FindFirstChild(selectedPlayer) then
+            selectedPlayer = nil
         end
     end
 end)
 
-local function createTargetToggle(toggleTitle, actionName)
+TargetTab:CreateSection("Target Actions")
+
+local function createTargetToggle(toggleName, actionName)
     local enabled = false
     local loopId = 0
 
-    TargetTab:AddToggle(toggleTitle, {
-        Title = toggleTitle,
-        Default = false,
+    TargetTab:CreateToggle({
+        Name = " " .. toggleName,
+        CurrentValue = false,
+
         Callback = function(Value)
             enabled = Value
             loopId += 1
+
             local currentLoopId = loopId
 
-            if not enabled then return end
+            if not enabled then
+                return
+            end
 
             task.spawn(function()
                 while enabled and loopId == currentLoopId do
-                    local target = selectedPlayer and Players:FindFirstChild(selectedPlayer)
+                    local targetName = selectedPlayer
+                    local target = targetName
+                        and Players:FindFirstChild(targetName)
+
                     if target and target ~= LocalPlayer then
                         pcall(function()
                             Remote:FireServer(target.Name, actionName)
                         end)
                     end
+
                     task.wait(1)
                 end
             end)
-        end
+        end,
     })
 end
 
-createTargetToggle("Freeze Target", "Freeze")
-createTargetToggle("Kill Target", "Kill")
-createTargetToggle("Slow Target", "Slow")
-createTargetToggle("Jail Target", "Jail")
-createTargetToggle("Fling Target", "Fling")
+createTargetToggle("Freeze", "Freeze")
+createTargetToggle("Kill", "Kill")
+createTargetToggle("Slow", "Slow")
+createTargetToggle("Jail", "Jail")
+createTargetToggle("Fling", "Fling")
 
--- =========================================================
--- ABA MOVEMENT (Movimentação)
--- =========================================================
-local MovementTab = Window:AddTab({ Title = "Movement", Icon = "move" })
+-- Movement Tab
+local MovementTab = Window:CreateTab({
+    Name = " Movement",
+    Icon = nil,
+})
+
+MovementTab:CreateSection("Movement Settings")
 
 local WalkSpeedValue = 16
 local JumpHeightValue = 7.2
 
-local function getCharacter() return LocalPlayer.Character end
+local function getCharacter()
+    return LocalPlayer.Character
+end
+
 local function getHumanoid()
-    local char = getCharacter()
-    return char and char:FindFirstChildOfClass("Humanoid")
+    local character = getCharacter()
+    return character and character:FindFirstChildOfClass("Humanoid")
 end
 
 local function applyWalkSpeed()
-    local hum = getHumanoid()
-    if hum then hum.WalkSpeed = WalkSpeedValue end
+    local humanoid = getHumanoid()
+
+    if humanoid then
+        humanoid.WalkSpeed = WalkSpeedValue
+    end
 end
 
 local function applyJumpHeight()
-    local hum = getHumanoid()
-    if hum then
-        hum.UseJumpPower = false
-        hum.JumpHeight = JumpHeightValue
+    local humanoid = getHumanoid()
+
+    if humanoid then
+        humanoid.UseJumpPower = false
+        humanoid.JumpHeight = JumpHeightValue
     end
 end
 
@@ -270,41 +347,71 @@ RunService.Heartbeat:Connect(function()
     applyJumpHeight()
 end)
 
-MovementTab:AddSlider("WalkSpeedSlider", {
-    Title = "WalkSpeed",
-    Min = 16, Max = 200, Default = 16, Rounding = 0,
+MovementTab:CreateSlider({
+    Name = " Walkspeed",
+    Range = {16, 200},
+    Increment = 1,
+    Suffix = "Speed",
+    CurrentValue = 16,
+
     Callback = function(Value)
         WalkSpeedValue = Value
         applyWalkSpeed()
-    end
+    end,
 })
 
-MovementTab:AddSlider("JumpHeightSlider", {
-    Title = "Jump Height",
-    Min = 7, Max = 150, Default = 7, Rounding = 0,
+MovementTab:CreateSlider({
+    Name = " Jump Height",
+    Range = {7, 150},
+    Increment = 1,
+    Suffix = "Height",
+    CurrentValue = 7,
+
     Callback = function(Value)
         JumpHeightValue = Value
         applyJumpHeight()
-    end
+    end,
 })
 
--- --- Float Platform ---
+LocalPlayer.CharacterAdded:Connect(function(character)
+    local humanoid = character:WaitForChild("Humanoid", 10)
+
+    if humanoid then
+        task.wait(0.2)
+        applyWalkSpeed()
+        applyJumpHeight()
+    end
+end)
+
+MovementTab:CreateSection("Movement Toggles")
+
+-- Float
 local floatEnabled = false
 local floatConnection = nil
 
-MovementTab:AddToggle("FloatToggle", {
-    Title = "Float",
-    Default = false,
+MovementTab:CreateToggle({
+    Name = " Float",
+    CurrentValue = false,
+
     Callback = function(Value)
         floatEnabled = Value
-        if floatConnection then floatConnection:Disconnect() floatConnection = nil end
+
+        if floatConnection then
+            floatConnection:Disconnect()
+            floatConnection = nil
+        end
 
         if floatEnabled then
             floatConnection = RunService.Heartbeat:Connect(function()
-                local char = getCharacter()
-                local root = char and char:FindFirstChild("HumanoidRootPart")
+                local character = getCharacter()
+                local root = character
+                    and character:FindFirstChild("HumanoidRootPart")
+
                 if root then
-                    local float = char:FindFirstChild("RayfieldFloatPlatform")
+                    local float = character:FindFirstChild(
+                        "RayfieldFloatPlatform"
+                    )
+
                     if not float then
                         float = Instance.new("Part")
                         float.Name = "RayfieldFloatPlatform"
@@ -312,147 +419,236 @@ MovementTab:AddToggle("FloatToggle", {
                         float.Transparency = 1
                         float.Anchored = true
                         float.CanCollide = true
-                        float.Parent = char
+                        float.Parent = character
                     end
+
                     float.CFrame = root.CFrame * CFrame.new(0, -3.5, 0)
                 end
             end)
         else
-            local char = getCharacter()
-            local float = char and char:FindFirstChild("RayfieldFloatPlatform")
-            if float then float:Destroy() end
+            local character = getCharacter()
+            local float = character
+                and character:FindFirstChild("RayfieldFloatPlatform")
+
+            if float then
+                float:Destroy()
+            end
         end
-    end
+    end,
 })
 
--- --- Noclip ---
+-- Noclip
 local noclipEnabled = false
 local noclipConnection = nil
 
-MovementTab:AddToggle("NoclipToggle", {
-    Title = "Noclip",
-    Default = false,
+MovementTab:CreateToggle({
+    Name = " Noclip",
+    CurrentValue = false,
+
     Callback = function(Value)
         noclipEnabled = Value
-        if noclipConnection then noclipConnection:Disconnect() noclipConnection = nil end
+
+        if noclipConnection then
+            noclipConnection:Disconnect()
+            noclipConnection = nil
+        end
 
         if noclipEnabled then
             noclipConnection = RunService.Stepped:Connect(function()
-                local char = getCharacter()
-                if char then
-                    for _, part in ipairs(char:GetDescendants()) do
-                        if part:IsA("BasePart") then part.CanCollide = false end
+                local character = getCharacter()
+
+                if character then
+                    for _, part in ipairs(character:GetDescendants()) do
+                        if part:IsA("BasePart") then
+                            part.CanCollide = false
+                        end
                     end
                 end
             end)
+        else
+            local character = getCharacter()
+
+            if character then
+                for _, part in ipairs(character:GetDescendants()) do
+                    if part:IsA("BasePart")
+                        and part.Name ~= "HumanoidRootPart" then
+                        part.CanCollide = true
+                    end
+                end
+            end
         end
-    end
+    end,
 })
 
--- --- Fly ---
+-- Fly
 local flyEnabled = false
 local flyConnection = nil
 local flyBodyVelocity = nil
 local flyBodyGyro = nil
 
 local function stopFly()
-    if flyConnection then flyConnection:Disconnect() flyConnection = nil end
-    if flyBodyVelocity then flyBodyVelocity:Destroy() flyBodyVelocity = nil end
-    if flyBodyGyro then flyBodyGyro:Destroy() flyBodyGyro = nil end
+    if flyConnection then
+        flyConnection:Disconnect()
+        flyConnection = nil
+    end
+
+    if flyBodyVelocity then
+        flyBodyVelocity:Destroy()
+        flyBodyVelocity = nil
+    end
+
+    if flyBodyGyro then
+        flyBodyGyro:Destroy()
+        flyBodyGyro = nil
+    end
 end
 
-MovementTab:AddToggle("FlyToggle", {
-    Title = "Fly",
-    Default = false,
+local function startFly()
+    stopFly()
+
+    local character = getCharacter()
+    local root = character and character:FindFirstChild("HumanoidRootPart")
+    local humanoid = getHumanoid()
+
+    if not root or not humanoid then
+        return
+    end
+
+    flyBodyVelocity = Instance.new("BodyVelocity")
+    flyBodyVelocity.MaxForce = Vector3.new(1e5, 1e5, 1e5)
+    flyBodyVelocity.Velocity = Vector3.zero
+    flyBodyVelocity.Parent = root
+
+    flyBodyGyro = Instance.new("BodyGyro")
+    flyBodyGyro.MaxTorque = Vector3.new(1e5, 1e5, 1e5)
+    flyBodyGyro.P = 1e4
+    flyBodyGyro.CFrame = root.CFrame
+    flyBodyGyro.Parent = root
+
+    flyConnection = RunService.RenderStepped:Connect(function()
+        if not flyEnabled or not root.Parent then
+            stopFly()
+            return
+        end
+
+        local camera = Workspace.CurrentCamera
+        local direction = Vector3.zero
+
+        if humanoid.MoveDirection.Magnitude > 0 then
+            direction = camera.CFrame.LookVector
+                * humanoid.MoveDirection.Magnitude
+        end
+
+        if UserInputService:IsKeyDown(Enum.KeyCode.Space) then
+            direction += Vector3.new(0, 1, 0)
+        end
+
+        if UserInputService:IsKeyDown(Enum.KeyCode.LeftControl) then
+            direction -= Vector3.new(0, 1, 0)
+        end
+
+        flyBodyVelocity.Velocity = direction * 60
+        flyBodyGyro.CFrame = camera.CFrame
+    end)
+end
+
+MovementTab:CreateToggle({
+    Name = " Fly",
+    CurrentValue = false,
+
     Callback = function(Value)
         flyEnabled = Value
-        if not flyEnabled then return stopFly() end
 
-        stopFly()
-        local char = getCharacter()
-        local root = char and char:FindFirstChild("HumanoidRootPart")
-        local hum = getHumanoid()
-        if not root or not hum then return end
-
-        flyBodyVelocity = Instance.new("BodyVelocity")
-        flyBodyVelocity.MaxForce = Vector3.new(1e5, 1e5, 1e5)
-        flyBodyVelocity.Velocity = Vector3.zero
-        flyBodyVelocity.Parent = root
-
-        flyBodyGyro = Instance.new("BodyGyro")
-        flyBodyGyro.MaxTorque = Vector3.new(1e5, 1e5, 1e5)
-        flyBodyGyro.P = 1e4
-        flyBodyGyro.CFrame = root.CFrame
-        flyBodyGyro.Parent = root
-
-        flyConnection = RunService.RenderStepped:Connect(function()
-            if not flyEnabled or not root.Parent then return stopFly() end
-            local camera = Workspace.CurrentCamera
-            local direction = Vector3.zero
-
-            if hum.MoveDirection.Magnitude > 0 then
-                direction = camera.CFrame.LookVector * hum.MoveDirection.Magnitude
-            end
-
-            if UserInputService:IsKeyDown(Enum.KeyCode.Space) then direction += Vector3.new(0, 1, 0) end
-            if UserInputService:IsKeyDown(Enum.KeyCode.LeftControl) then direction -= Vector3.new(0, 1, 0) end
-
-            flyBodyVelocity.Velocity = direction * 60
-            flyBodyGyro.CFrame = camera.CFrame
-        end)
-    end
+        if flyEnabled then
+            startFly()
+        else
+            stopFly()
+        end
+    end,
 })
 
--- --- Infinite Jump ---
+-- Infinite Jump
 local infiniteJumpEnabled = false
+
 UserInputService.JumpRequest:Connect(function()
     if infiniteJumpEnabled then
-        local hum = getHumanoid()
-        if hum then hum:ChangeState(Enum.HumanoidStateType.Jumping) end
+        local humanoid = getHumanoid()
+
+        if humanoid then
+            humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+        end
     end
 end)
 
-MovementTab:AddToggle("InfJumpToggle", {
-    Title = "Infinite Jump",
-    Default = false,
+MovementTab:CreateToggle({
+    Name = " Infinite Jump",
+    CurrentValue = false,
+
     Callback = function(Value)
         infiniteJumpEnabled = Value
-    end
+    end,
 })
 
--- --- TP Through Wall ---
+-- Tp Through Wall
 local tpWallEnabled = false
 local tpWallDistance = 8
 
-MovementTab:AddSlider("TpWallDistance", {
-    Title = "TP Distance (Press T)",
-    Min = 2, Max = 30, Default = 8, Rounding = 0,
-    Callback = function(Value) tpWallDistance = Value end
+MovementTab:CreateSlider({
+    Name = " TP Through Wall Distance",
+    Range = {2, 30},
+    Increment = 1,
+    Suffix = "Studs",
+    CurrentValue = 8,
+
+    Callback = function(Value)
+        tpWallDistance = Value
+    end,
 })
 
-MovementTab:AddToggle("TpWallToggle", {
-    Title = "TP Through Wall (Key T)",
-    Default = false,
-    Callback = function(Value) tpWallEnabled = Value end
+MovementTab:CreateToggle({
+    Name = " Tp Through Wall",
+    CurrentValue = false,
+
+    Callback = function(Value)
+        tpWallEnabled = Value
+    end,
 })
 
 UserInputService.InputBegan:Connect(function(input, gameProcessed)
-    if gameProcessed or not tpWallEnabled or input.KeyCode ~= Enum.KeyCode.T then return end
+    if gameProcessed or not tpWallEnabled then
+        return
+    end
 
-    local char = getCharacter()
-    local root = char and char:FindFirstChild("HumanoidRootPart")
-    if root then
-        local direction = Workspace.CurrentCamera.CFrame.LookVector
-        local raycastParams = RaycastParams.new()
-        raycastParams.FilterType = Enum.RaycastFilterType.Exclude
-        raycastParams.FilterDescendantsInstances = {char}
+    if input.KeyCode == Enum.KeyCode.T then
+        local character = getCharacter()
+        local root = character and character:FindFirstChild("HumanoidRootPart")
 
-        local result = Workspace:Raycast(root.Position, direction * tpWallDistance, raycastParams)
-        if result then
-            local destination = result.Position + direction * tpWallDistance
-            root.CFrame = CFrame.new(destination, destination + direction)
-        else
-            root.CFrame = root.CFrame + direction * tpWallDistance
+        if root then
+            local direction = Workspace.CurrentCamera.CFrame.LookVector
+            local origin = root.Position
+
+            local raycastParams = RaycastParams.new()
+            raycastParams.FilterType = Enum.RaycastFilterType.Exclude
+            raycastParams.FilterDescendantsInstances = {character}
+
+            local result = Workspace:Raycast(
+                origin,
+                direction * tpWallDistance,
+                raycastParams
+            )
+
+            if result then
+                local destination = result.Position
+                    + direction * tpWallDistance
+
+                root.CFrame = CFrame.new(
+                    destination,
+                    destination + direction
+                )
+            else
+                root.CFrame = root.CFrame
+                    + direction * tpWallDistance
+            end
         end
     end
 end)
