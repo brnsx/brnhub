@@ -10,8 +10,8 @@ local UserInputService = game:GetService("UserInputService")
 local Remote = ReplicatedStorage.Packages.Replion.Remotes.TrollTarget
 
 local Window = Rayfield:CreateWindow({
-    Name = " Lucky blocks but you steal it",
-    Subtitle = "made by localqw6",
+    Name = "BrN Hub",
+    Subtitle = "By BreNo",
     Theme = "Amethyst",
 })
 
