@@ -1,7 +1,8 @@
 {
   "104665774109230": {
     "Name": "Lucky blocks but you steal it",
-    "ScriptURL": "https://raw.githubusercontent.com/brnsx/brnhub/refs/heads/main/games/luckyblocksbutyoustealit.lua"
+    "ScriptURL": "https://raw.githubusercontent.com/brnsx/brnhub/refs/heads/main/games/luckyblocksbutyoustealit.lua",
+    "Status": "Working"
   },
   "93978595733734": {
     "Name": "Violece District",
