@@ -13,5 +13,10 @@
     "Name": "Car Dealership Tycoon",
     "ScriptURL": "https://raw.githubusercontent.com/brnsx/brnhub/refs/heads/main/games/cardealershiptycoon.lua",
     "Status": "Working"
+  },
+  "142823291": {
+    "Name": "Murder Mistery 2",
+    "ScriptURL": "https://raw.githubusercontent.com/brnsx/brnhub/refs/heads/main/games/murdermistery2.lua",
+    "Status": "Working"
   }
 }
