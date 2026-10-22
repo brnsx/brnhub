@@ -8,5 +8,10 @@
     "Name": "Violece District",
     "ScriptURL": "https://raw.githubusercontent.com/brnsx/brnhub/refs/heads/main/games/violencedistrict.lua",
     "Status": "Working"
+  },
+  "1554960397": {
+    "Name": "Car Dealership Tycoon",
+    "ScriptURL": "https://raw.githubusercontent.com/brnsx/brnhub/refs/heads/main/games/cardealershiptycoon.lua",
+    "Status": "Working"
   }
 }
