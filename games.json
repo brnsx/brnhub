@@ -18,5 +18,10 @@
     "Name": "Murder Mistery 2",
     "ScriptURL": "https://raw.githubusercontent.com/brnsx/brnhub/refs/heads/main/games/murdermistery2.lua",
     "Status": "Working"
+  },
+  "12355337193": {
+    "Name": "Murderes vs Sheriffs Duels",
+    "ScriptURL": "https://raw.githubusercontent.com/brnsx/brnhub/refs/heads/main/games/murderesvssheriffsduels.lua",
+    "Status": "Working"
   }
 }
