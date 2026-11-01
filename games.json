@@ -38,5 +38,10 @@
     "Name": "Entrenched",
     "ScriptURL": "https://raw.githubusercontent.com/brnsx/brnhub/refs/heads/main/games/entrenched.lua",
     "Status": "Working"
+  },
+  "18687417158": {
+    "Name": "Forsaken",
+    "ScriptURL": "https://raw.githubusercontent.com/brnsx/brnhub/refs/heads/main/games/forsaken.lua",
+    "Status": "Working"
   }
 }
