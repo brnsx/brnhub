@@ -33,5 +33,10 @@
     "Name": "Huss Valley",
     "ScriptURL": "https://raw.githubusercontent.com/brnsx/brnhub/refs/heads/main/games/hussvalley.lua",
     "Status": "Working"
+  },
+  "3678761576": {
+    "Name": "Entrenched",
+    "ScriptURL": "https://raw.githubusercontent.com/brnsx/brnhub/refs/heads/main/games/entrenched.lua",
+    "Status": "Working"
   }
 }
