@@ -23,5 +23,10 @@
     "Name": "Murderes vs Sheriffs Duels",
     "ScriptURL": "https://raw.githubusercontent.com/brnsx/brnhub/refs/heads/main/games/murderesvssheriffsduels.lua",
     "Status": "Working"
+  },
+  "10449761463": {
+    "Name": "The Strongest Battlegrounds",
+    "ScriptURL": "https://raw.githubusercontent.com/brnsx/brnhub/refs/heads/main/games/thestrongestbattlegrounds.lua",
+    "Status": "Working"
   }
 }
