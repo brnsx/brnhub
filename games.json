@@ -38,5 +38,10 @@
     "Name": "Forsaken",
     "ScriptURL": "https://raw.githubusercontent.com/brnsx/brnhub/refs/heads/main/games/forsaken.lua",
     "Status": "Working"
+  },
+  "88207898227053": {
+    "Name": "Build Bridge to Brainrots",
+    "ScriptURL": "https://raw.githubusercontent.com/brnsx/brnhub/refs/heads/main/games/buildbridgetobrainrots.lua",
+    "Status": "Working"
   }
 }
