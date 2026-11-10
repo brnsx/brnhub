@@ -48,5 +48,10 @@
     "Name": "Project Delta",
     "ScriptURL": "https://raw.githubusercontent.com/brnsx/brnhub/refs/heads/main/games/projectdelta.lua",
     "Status": "Working"
+  },
+  "119925538689885": {
+    "Name": "Steal Or Die",
+    "ScriptURL": "https://raw.githubusercontent.com/brnsx/brnhub/refs/heads/main/games/stealordie.lua",
+    "Status": "Working"
   }
 }
