@@ -43,5 +43,10 @@
     "Name": "Build Bridge to Brainrots",
     "ScriptURL": "https://raw.githubusercontent.com/brnsx/brnhub/refs/heads/main/games/buildbridgetobrainrots.lua",
     "Status": "Working"
+  },
+  "7336302630": {
+    "Name": "Project Delta",
+    "ScriptURL": "https://raw.githubusercontent.com/brnsx/brnhub/refs/heads/main/games/projectdelta.lua",
+    "Status": "Working"
   }
 }
