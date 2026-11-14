@@ -53,5 +53,10 @@
     "Name": "Steal Or Die",
     "ScriptURL": "https://raw.githubusercontent.com/brnsx/brnhub/refs/heads/main/games/stealordie.lua",
     "Status": "Working"
+  },
+  "155615604": {
+    "Name": "Prison Life",
+    "ScriptURL": "https://raw.githubusercontent.com/brnsx/brnhub/refs/heads/main/games/prisonlife.lua",
+    "Status": "Limited"
   }
 }
