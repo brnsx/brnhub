@@ -58,5 +58,10 @@
     "Name": "Prison Life",
     "ScriptURL": "https://raw.githubusercontent.com/brnsx/brnhub/refs/heads/main/games/prisonlife.lua",
     "Status": "Limited"
+  },
+  "130878180532794": {
+    "Name": "RoChess!",
+    "ScriptURL": "https://raw.githubusercontent.com/brnsx/brnhub/refs/heads/main/games/rochess.lua",
+    "Status": "Working"
   }
 }
