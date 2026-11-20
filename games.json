@@ -63,5 +63,10 @@
     "Name": "RoChess!",
     "ScriptURL": "https://raw.githubusercontent.com/brnsx/brnhub/refs/heads/main/games/rochess.lua",
     "Status": "Working"
+  },
+  "116495829188952": {
+    "Name": "Dead Rails",
+    "ScriptURL": "https://raw.githubusercontent.com/brnsx/brnhub/refs/heads/main/games/deadrails.lua",
+    "Status": "Working"
   }
 }
